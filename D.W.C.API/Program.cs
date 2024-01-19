@@ -1,11 +1,41 @@
+using D.W.C.API.D.W.C.Service;
+using D.W.C.Lib.D.W.C.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using D.W.C.Lib;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Configure DbContext with SQL Server
+builder.Services.AddDbContext<MyDatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDatabase")));
+
+// Configure AzureDevOpsSettings
+builder.Services.Configure<AzureDevOpsSettings>(
+    builder.Configuration.GetSection("AzureDevOpsSettings"));
+
+// Register HttpClient
+builder.Services.AddHttpClient();
+
+// Register AzureDevOpsClient as a service
+builder.Services.AddScoped<AzureDevOpsClient>(sp =>
+{
+    var httpClient = sp.GetRequiredService<HttpClient>();
+    var settings = sp.GetRequiredService<IOptions<AzureDevOpsSettings>>();
+    return new AzureDevOpsClient(httpClient, settings);
+});
+
+// Configure Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "D.W.C. API", Version = "v1" });
+});
 
 var app = builder.Build();
 
@@ -17,9 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
