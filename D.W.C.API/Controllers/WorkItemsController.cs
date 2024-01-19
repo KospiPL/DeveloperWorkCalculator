@@ -16,7 +16,7 @@ namespace D.W.C.Api.Controllers
 
         public AzureDevOpsController(AzureDevOpsClient devOpsClient)
         {
-            _devOpsClient = devOpsClient;
+            _devOpsClient = devOpsClient ?? throw new ArgumentNullException(nameof(devOpsClient));
         }
 
         [HttpGet("iteration/latest")]
@@ -56,6 +56,33 @@ namespace D.W.C.Api.Controllers
                 var workItemDetailsJson = await _devOpsClient.GetWorkItemDetailsAsync(workItemId);
                 var workItemDetails = JsonConvert.DeserializeObject<WorkItemDetails>(workItemDetailsJson);
                 return Ok(workItemDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpGet("workitem/extended/{workItemId}")]
+        public async Task<IActionResult> GetWorkItemDetailsExtended(int workItemId)
+        {
+            try
+            {
+                var workItemDetails = await _devOpsClient.GetWorkItemDetailsExtendedAsync(workItemId);
+                return Ok(workItemDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPatch("workitem/update/{workItemId}")]
+        public async Task<IActionResult> UpdateWorkItem(int workItemId, [FromBody] string jsonPatchDocument)
+        {
+            try
+            {
+                await _devOpsClient.UpdateWorkItemAsync(workItemId, jsonPatchDocument);
+                return Ok("Work item updated successfully.");
             }
             catch (Exception ex)
             {

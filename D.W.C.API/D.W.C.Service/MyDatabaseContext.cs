@@ -1,4 +1,5 @@
 ﻿using D.W.C.Lib.D.W.C.Models;
+using DevWorkCalc.D.W.C.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace D.W.C.API.D.W.C.Service
@@ -17,32 +18,25 @@ namespace D.W.C.API.D.W.C.Service
             modelBuilder.Entity<WorkItemDetails>(entity =>
             {
                 entity.ToTable("WorkItems");
-
                 entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(255);
+                entity.OwnsOne(e => e.Fields, fieldsBuilder =>
+                {
+                    fieldsBuilder.Property(f => f.AreaPath).HasMaxLength(255);
+                    fieldsBuilder.Property(f => f.TeamProject).HasMaxLength(255);
+                    fieldsBuilder.Property(f => f.IterationPath).HasMaxLength(255);
+                    fieldsBuilder.Property(f => f.WorkItemType).HasMaxLength(50);
+                    fieldsBuilder.Property(f => f.State).HasMaxLength(50);
+                    fieldsBuilder.Property(f => f.Title).IsRequired().HasMaxLength(255);
+                    fieldsBuilder.Property(f => f.BoardColumn).HasMaxLength(50);
+                    fieldsBuilder.Property(f => f.ActivatedDate).HasColumnType("datetime");
+                    fieldsBuilder.Property(f => f.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.AssignedTo)
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.Status)
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.AreaPath)
-                    .HasMaxLength(255);
-
-                entity.Property(e => e.CreationDate)
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.ActivatedDate)
-                    .HasColumnType("datetime")
-                    .IsRequired(false);
-
-                entity.Property(e => e.LastChangedDate)
-                    .HasColumnType("datetime")
-                    .IsRequired(false);
+                    fieldsBuilder.OwnsOne(f => f.AssignedTo, atBuilder =>
+                    {
+                        atBuilder.Property(a => a.DisplayName).HasColumnName("AssignedToDisplayName").HasMaxLength(255);
+                    });
+                });
             });
         }
     }

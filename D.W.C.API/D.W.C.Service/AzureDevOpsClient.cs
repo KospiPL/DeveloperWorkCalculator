@@ -58,7 +58,7 @@ namespace D.W.C.Lib
 
         public async Task<string> GetWorkItemDetailsAsync(int workItemId)
         {
-            var url = $"{_baseUrl}_apis/wit/workitems/{workItemId}?fields=System.Id,System.Title,System.WorkItemType,Microsoft.VSTS.Common.ActivatedDate,Microsoft.VSTS.Common.ResolvedDate,Microsoft.VSTS.Scheduling.StoryPoints&api-version=7.2-preview.3";
+            var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workitems?ids={workItemId}&fields=System.Id,System.Title,System.WorkItemType,Microsoft.VSTS.Common.ActivatedDate,Microsoft.VSTS.Common.ResolvedDate,Microsoft.VSTS.Scheduling.StoryPoints&api-version=7.2-preview.3";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
@@ -66,7 +66,7 @@ namespace D.W.C.Lib
 
         public async Task<WorkItemDetails> GetWorkItemDetailsExtendedAsync(int workItemId)
         {
-            var url = $"{_baseUrl}_apis/wit/workitems/{workItemId}";
+            var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workitems?ids={workItemId}&api-version=7.2-preview.3";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
