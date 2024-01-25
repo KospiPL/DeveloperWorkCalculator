@@ -8,6 +8,6 @@ namespace DevWorkCalc.D.W.C.Models
 {
     public class WorkItemsList
     {
-        public List<WorkItemRelation> WorkItemRelations { get; set; }
+        public List<WorkItemRelation>? WorkItemRelations { get; set; }
     }
 }

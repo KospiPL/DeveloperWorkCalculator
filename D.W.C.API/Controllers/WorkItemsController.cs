@@ -89,6 +89,19 @@ namespace D.W.C.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        [HttpGet("workitem/history/{workItemId}")]
+        public async Task<IActionResult> GetWorkItemHistory(int workItemId)
+        {
+            try
+            {
+                var WorkItemHistoryList = await _devOpsClient.GetWorkItemHistoryAsync(workItemId);
+                return Ok(WorkItemHistoryList); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
     }
 }
