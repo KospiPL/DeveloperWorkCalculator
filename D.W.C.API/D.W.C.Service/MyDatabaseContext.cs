@@ -20,23 +20,23 @@ namespace D.W.C.API.D.W.C.Service
                 entity.ToTable("WorkItems");
                 entity.HasKey(e => e.Id);
 
-                entity.OwnsOne(e => e.Fields, fieldsBuilder =>
-                {
-                    fieldsBuilder.Property(f => f.AreaPath).HasMaxLength(255);
-                    fieldsBuilder.Property(f => f.TeamProject).HasMaxLength(255);
-                    fieldsBuilder.Property(f => f.IterationPath).HasMaxLength(255);
-                    fieldsBuilder.Property(f => f.WorkItemType).HasMaxLength(50);
-                    fieldsBuilder.Property(f => f.State).HasMaxLength(50);
-                    fieldsBuilder.Property(f => f.Title).IsRequired().HasMaxLength(255);
-                    fieldsBuilder.Property(f => f.BoardColumn).HasMaxLength(50);
-                    fieldsBuilder.Property(f => f.ActivatedDate).HasColumnType("datetime");
-                    fieldsBuilder.Property(f => f.CreatedDate).HasColumnType("datetime");
+                //entity.OwnsOne(e => e.Fields, fieldsBuilder =>
+                //{
+                //    fieldsBuilder.Property(f => f.AreaPath).HasMaxLength(255);
+                //    fieldsBuilder.Property(f => f.TeamProject).HasMaxLength(255);
+                //    fieldsBuilder.Property(f => f.IterationPath).HasMaxLength(255);
+                //    fieldsBuilder.Property(f => f.WorkItemType).HasMaxLength(50);
+                //    fieldsBuilder.Property(f => f.State).HasMaxLength(50);
+                //    fieldsBuilder.Property(f => f.Title).IsRequired().HasMaxLength(255);
+                //    fieldsBuilder.Property(f => f.BoardColumn).HasMaxLength(50);
+                //    fieldsBuilder.Property(f => f.ActivatedDate).HasColumnType("datetime");
+                //    fieldsBuilder.Property(f => f.CreatedDate).HasColumnType("datetime");
 
-                    fieldsBuilder.OwnsOne(f => f.AssignedTo, atBuilder =>
-                    {
-                        atBuilder.Property(a => a.DisplayName).HasColumnName("AssignedToDisplayName").HasMaxLength(255);
-                    });
-                });
+                //    fieldsBuilder.OwnsOne(f => f.AssignedTo, atBuilder =>
+                //    {
+                //        atBuilder.Property(a => a.DisplayName).HasColumnName("AssignedToDisplayName").HasMaxLength(255);
+                //    });
+                //});
             });
         }
     }

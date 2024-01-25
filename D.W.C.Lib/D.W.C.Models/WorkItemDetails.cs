@@ -7,49 +7,56 @@ using System.Threading.Tasks;
 
 namespace D.W.C.Lib.D.W.C.Models
 {
+    public class WorkDetails
+    {
+        [JsonProperty("count")]
+        public int? count { get; set; }
+        [JsonProperty ("value")]
+        public List<WorkItemDetails>? Value { get; set; }
+    }
     public class WorkItemDetails
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [JsonProperty("rev")]
-        public int Rev { get; set; }
+        public int? Rev { get; set; }
 
         [JsonProperty("fields")]
-        public WorkItemFields Fields { get; set; }
+        public WorkItemFields? Fields { get; set; }
     }
 
     public class WorkItemFields
     {
         [JsonProperty("System.AreaPath")]
-        public string AreaPath { get; set; }
+        public string? AreaPath { get; set; }
 
         [JsonProperty("System.TeamProject")]
-        public string TeamProject { get; set; }
+        public string? TeamProject { get; set; }
 
         [JsonProperty("System.IterationPath")]
-        public string IterationPath { get; set; }
+        public string? IterationPath { get; set; }
 
         [JsonProperty("System.WorkItemType")]
-        public string WorkItemType { get; set; }
+        public string? WorkItemType { get; set; }
 
         [JsonProperty("System.State")]
-        public string State { get; set; }
+        public string? State { get; set; }
 
         [JsonProperty("System.AssignedTo")]
-        public AssignedTo AssignedTo { get; set; }
+        public AssignedTo? AssignedTo { get; set; }
 
         [JsonProperty("System.CreatedDate")]
         public DateTime CreatedDate { get; set; }
 
         [JsonProperty("System.Title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonProperty("System.BoardColumn")]
-        public string BoardColumn { get; set; }
+        public string? BoardColumn { get; set; }
 
         [JsonProperty("Microsoft.VSTS.Common.ActivatedDate")]
-        public DateTime ActivatedDate { get; set; }
+        public DateTime? ActivatedDate { get; set; }
 
         [JsonProperty("Microsoft.VSTS.Common.ResolvedDate")]
         public DateTime? ResolvedDate { get; set; }
@@ -60,7 +67,7 @@ namespace D.W.C.Lib.D.W.C.Models
     public class AssignedTo
     {
         [JsonProperty("displayName")]
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         
     }

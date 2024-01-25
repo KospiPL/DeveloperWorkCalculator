@@ -64,13 +64,14 @@ namespace D.W.C.Lib
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<WorkItemDetails> GetWorkItemDetailsExtendedAsync(int workItemId)
+        public async Task<WorkDetails> GetWorkItemDetailsExtendedAsync(int workItemId)
         {
             var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workitems?ids={workItemId}&api-version=7.2-preview.3";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<WorkItemDetails>(jsonString);
+            var o = JsonConvert.DeserializeObject<WorkDetails>(jsonString);
+            return o;
         }
 
         public async Task UpdateWorkItemAsync(int workItemId, string jsonPatchDocument)
@@ -84,6 +85,15 @@ namespace D.W.C.Lib
             var content = new StringContent(jsonPatchDocument, System.Text.Encoding.UTF8, "application/json-patch+json");
             var response = await _httpClient.PatchAsync(url, content);
             response.EnsureSuccessStatusCode();
+        }
+        public async Task<WorkItemHistoryList> GetWorkItemHistoryAsync(int workItemId)
+        {
+            var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workItems/{workItemId}/updates?api-version=7.2-preview.4";
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var o = JsonConvert.DeserializeObject<WorkItemHistoryList>(jsonString);
+            return o;
         }
     }
 }
