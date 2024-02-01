@@ -10,7 +10,7 @@ namespace D.W.C.Lib.D.W.C.Models
     public class WorkItemHistoryList
     {
         [JsonProperty("count")]
-        public int? count {  get; set; }
+        public int? count { get; set; }
         [JsonProperty("value")]
         public List<WorkItemHistory>? Value { get; set; }
     }
@@ -30,6 +30,7 @@ namespace D.W.C.Lib.D.W.C.Models
         public ChangeDate? System_ChangedDate { get; set; }
         [JsonProperty("System.BoardColumn")]
         public BoardColumn? System_BoardColumn { get; set; }
+        public string RequiredProperty { get; set; }
     }
 
     public class ChangeDate
