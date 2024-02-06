@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using D.W.C.API.D.W.C.Service;
+using AutoMapper;
 
 namespace D.W.C.Api.Controllers
 {
@@ -15,10 +16,12 @@ namespace D.W.C.Api.Controllers
     public class AzureDevOpsController : ControllerBase
     {
         private readonly AzureDevOpsClient _devOpsClient;
+        private readonly IMapper _mapper;
         private readonly MyDatabaseContext _context;
 
-        public AzureDevOpsController(AzureDevOpsClient devOpsClient, MyDatabaseContext context)
+        public AzureDevOpsController(IMapper mapper, AzureDevOpsClient devOpsClient, MyDatabaseContext context)
         {
+            _mapper = mapper;
             _devOpsClient = devOpsClient ?? throw new ArgumentNullException(nameof(devOpsClient));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -28,10 +31,34 @@ namespace D.W.C.Api.Controllers
         {
             try
             {
-                var (iterationId, iterationName) = await _devOpsClient.GetLatestIterationIdAsync();
+                IterationsListdto iterationListDto = await _devOpsClient.GetLatestIterationIdAsync();
 
+                if (iterationListDto == null || iterationListDto.Value == null || !iterationListDto.Value.Any())
+                {
+                    return NotFound("Nie znaleziono iteracji.");
+                }
 
-                return Ok(new { IterationId = iterationId, IterationName = iterationName });
+                var iterations = _mapper.Map<List<Iteration>>(iterationListDto.Value);
+
+                foreach (var iteration in iterations)
+                {
+                    var existingIteration = await _context.Iterations
+                        .FirstOrDefaultAsync(i => i.ApiId == iteration.ApiId);
+
+                    if (existingIteration != null)
+                    {
+                        _mapper.Map(iteration, existingIteration);
+                    }
+                    else
+                    {
+                        await _context.Iterations.AddAsync(iteration);
+                    }
+                }
+
+                
+                await _context.SaveChangesAsync();
+
+                return Ok(iterations);
             }
             catch (Exception ex)
             {
@@ -85,15 +112,20 @@ namespace D.W.C.Api.Controllers
         {
             try
             {
-                var workItemDetails = await _devOpsClient.GetWorkItemDetailsExtendedAsync(workItemId);
+                WorkDetailsDto workItemDetailsDto = await _devOpsClient.GetWorkItemDetailsExtendedAsync(workItemId);
+                var item = workItemDetailsDto.Value[0];
+                var workItemDetailsEntity = _mapper.Map<WorkItemDetails>(item);
 
-                _context.Add(workItemDetails);
+                _context.Add(workItemDetailsEntity);
                 await _context.SaveChangesAsync();
 
-                return Ok(workItemDetails);
+                
+                var workItemDetailsToReturn = _mapper.Map<WorkItemDetailsDto>(workItemDetailsEntity);
+
+                return Ok(workItemDetailsToReturn);
             }
             catch (Exception ex)
-            {
+             {
                 return StatusCode(500, $"B³¹d podczas pobierania rozszerzonych szczegó³ów elementu pracy: {ex.Message}");
             }
         }
@@ -124,12 +156,27 @@ namespace D.W.C.Api.Controllers
         {
             try
             {
-                var workItemHistory = await _devOpsClient.GetWorkItemHistoryAsync(workItemId);
+                WorkItemHistoryListDto workItemHistoryListDto = await _devOpsClient.GetWorkItemHistoryAsync(workItemId);
 
-                _context.WorkItemHistories.Add(workItemHistory);
+              
+                if (workItemHistoryListDto.Value == null || !workItemHistoryListDto.Value.Any())
+                {
+                    return NotFound("Nie znaleziono historii dla podanego ID elementu pracy.");
+                }
+
+                
+                var workItemHistories = _mapper.Map<List<WorkItemHistory>>(workItemHistoryListDto.Value);
+
+               
+                foreach (var workItemHistory in workItemHistories)
+                {
+                    _context.WorkItemsHistory.Add(workItemHistory);
+                }
                 await _context.SaveChangesAsync();
 
-                return Ok(workItemHistory);
+                var workItemHistoriesDtoToReturn = _mapper.Map<List<WorkItemHistorydto>>(workItemHistories);
+
+                return Ok(workItemHistoriesDtoToReturn);
             }
             catch (Exception ex)
             {

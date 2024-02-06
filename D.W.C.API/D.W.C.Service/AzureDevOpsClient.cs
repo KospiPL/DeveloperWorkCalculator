@@ -25,22 +25,14 @@ namespace D.W.C.Lib
                 Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($":{_settings.PersonalAccessToken}")));
         }
 
-        public async Task<(string id, string name)> GetLatestIterationIdAsync()
+        public async Task<IterationsListdto> GetLatestIterationIdAsync()
         {
             var url = $"{_baseUrl}_apis/work/teamsettings/iterations?api-version=7.2-preview.1";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
-
-            var iterations = JsonConvert.DeserializeObject<IterationsList>(jsonString);
-
-            if (iterations?.Value != null && iterations.Value.Any())
-            {
-                var latestIteration = iterations.Value.OrderByDescending(i => i.Attributes.FinishDate).FirstOrDefault();
-                return latestIteration != null ? (latestIteration.Id, latestIteration.Name) : throw new InvalidOperationException("No iterations found.");
-            }
-
-            throw new InvalidOperationException("Iterations data is null.");
+            var o = JsonConvert.DeserializeObject<IterationsListdto>(jsonString);
+            return o;
         }
 
         public async Task<string> GetWorkItemsFromSprintAsync(string iterationId)
@@ -64,13 +56,13 @@ namespace D.W.C.Lib
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<WorkDetails> GetWorkItemDetailsExtendedAsync(int workItemId)
+        public async Task<WorkDetailsDto> GetWorkItemDetailsExtendedAsync(int workItemId)
         {
             var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workitems?ids={workItemId}&api-version=7.2-preview.3";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
-            var o = JsonConvert.DeserializeObject<WorkDetails>(jsonString);
+            var o = JsonConvert.DeserializeObject<WorkDetailsDto>(jsonString);
             return o;
         }
 
@@ -86,13 +78,13 @@ namespace D.W.C.Lib
             var response = await _httpClient.PatchAsync(url, content);
             response.EnsureSuccessStatusCode();
         }
-        public async Task<WorkItemHistoryList> GetWorkItemHistoryAsync(int workItemId)
+        public async Task<WorkItemHistoryListDto> GetWorkItemHistoryAsync(int workItemId)
         {
             var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workItems/{workItemId}/updates?api-version=7.2-preview.4";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var jsonString = await response.Content.ReadAsStringAsync();
-            var o = JsonConvert.DeserializeObject<WorkItemHistoryList>(jsonString);
+            var o = JsonConvert.DeserializeObject<WorkItemHistoryListDto>(jsonString);
             return o;
         }
     }

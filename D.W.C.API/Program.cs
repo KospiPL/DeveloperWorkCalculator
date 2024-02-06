@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using D.W.C.Lib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Hosting;
+using FluentAssertions.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,8 @@ builder.Services.Configure<AzureDevOpsSettings>(
 
 // Register HttpClient
 builder.Services.AddHttpClient();
+builder.Services.AddAutoMapper(typeof(WorkItemProfile));
+
 
 // Register AzureDevOpsClient as a service
 builder.Services.AddScoped<AzureDevOpsClient>(sp =>
