@@ -43,6 +43,13 @@ namespace D.W.C.API.D.W.C.Service
                 .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.Attributes.StartDate))
                 .ForMember(dest => dest.FinishDate, opt => opt.MapFrom(src => src.Attributes.FinishDate))
                 .ReverseMap();
+
+            CreateMap<WorkItemRelationDto, WorkItemsList>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.ApiId, opt => opt.MapFrom(src => src.Target.Id))
+                .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.Target.Url))
+                .ForMember(dest => dest.SprintId, opt => opt.MapFrom(src => src.SprintId))
+                .ReverseMap();
         }
     }
 

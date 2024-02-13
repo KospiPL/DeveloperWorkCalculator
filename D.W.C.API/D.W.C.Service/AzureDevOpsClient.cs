@@ -35,7 +35,7 @@ namespace D.W.C.Lib
             return o;
         }
 
-        public async Task<string> GetWorkItemsFromSprintAsync(string iterationId)
+        public async Task<WorkItemsListDto> GetWorkItemsFromSprintAsync(string iterationId)
         {
             if (string.IsNullOrWhiteSpace(iterationId))
             {
@@ -45,16 +45,14 @@ namespace D.W.C.Lib
             var url = $"{_baseUrl}_apis/work/teamsettings/iterations/{iterationId}/workitems?api-version=7.2-preview.1";
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var workItemsListDto = JsonConvert.DeserializeObject<WorkItemsListDto>(jsonString);
+
+            workItemsListDto.WorkItemRelations.ForEach(relation => relation.SprintId = iterationId);
+
+            return workItemsListDto;
         }
 
-        public async Task<string> GetWorkItemDetailsAsync(int workItemId)
-        {
-            var url = $"https://dev.azure.com/gearcodegit/GC.BAT/_apis/wit/workitems?ids={workItemId}&fields=System.Id,System.Title,System.WorkItemType,Microsoft.VSTS.Common.ActivatedDate,Microsoft.VSTS.Common.ResolvedDate,Microsoft.VSTS.Scheduling.StoryPoints&api-version=7.2-preview.3";
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
-        }
 
         public async Task<WorkDetailsDto> GetWorkItemDetailsExtendedAsync(int workItemId)
         {
@@ -86,6 +84,31 @@ namespace D.W.C.Lib
             var jsonString = await response.Content.ReadAsStringAsync();
             var o = JsonConvert.DeserializeObject<WorkItemHistoryListDto>(jsonString);
             return o;
+        }
+        //Dodawanie i modyfikacje i usuwanie poszczegulnego zadania
+        public async Task<WorkItemDetailsDto> CreateWorkItemAsync(string workItemType, Dictionary<string, object> fields)
+        {
+            var url = $"{_baseUrl}_apis/wit/workitems/${workItemType}?api-version=7.2-preview.3";
+
+            var operations = fields.Select(field => new
+            {
+                op = "add",
+                path = $"/fields/{field.Key}",
+                value = field.Value
+            }).ToList();
+
+            var content = new StringContent(JsonConvert.SerializeObject(operations), System.Text.Encoding.UTF8, "application/json-patch+json");
+            var response = await _httpClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<WorkItemDetailsDto>(jsonString);
+        }
+        public async Task DeleteWorkItemAsync(int workItemId)
+        {
+            var url = $"{_baseUrl}_apis/wit/workitems/{workItemId}?api-version=7.2-preview.3";
+            var response = await _httpClient.DeleteAsync(url);
+            response.EnsureSuccessStatusCode();
         }
     }
 }
