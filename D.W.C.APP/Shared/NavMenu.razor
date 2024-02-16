@@ -1,33 +1,23 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿@inherits LayoutComponentBase
 
-<div class="@NavMenuCssClass">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <img src="path_to_your_home_icon" class="icon" alt="Home" /> Imię Nazwisko
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="moje-projekty">
-                <img src="path_to_your_projects_icon" class="icon" alt="Projects" /> Moje projekty
-            </NavLink>
-        </div>
-        
-    </nav>
+<div class="nav-menu @(CollapseNavMenu ? "collapsed" : "")">
+    <div class="user-profile">
+        <img src="/images/vector.svg" alt="User Profile" class="profile-icon" />
+        <span class="profile-name @(CollapseNavMenu ? "collapsed" : "")">Imie Nazwisko</span>
+    </div>
+    <a href="/projects" class="nav-item">
+        <img src="/images/roww.svg" alt="Projects" class="nav-icon project-icon @(CollapseNavMenu ? "collapsed" : "")" />
+        <span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Moje projekty</span>
+    </a>
+
+    <ul class="nav-items bootom-items">
+        <li><a href="/employees" class="nav-item"><img src="/images/uzytkownik.svg" alt="Employees" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Pracownicy</span></a></li>
+        <li><a href="/time" class="nav-item"><img src="/images/zegar.svg" alt="Time" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Czas</span></a></li>
+        <li><a href="/reports" class="nav-item"><img src="/images/raport.svg" alt="Reports" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Raporty</span></a></li>
+        <li><a href="/calendar" class="nav-item"><img src="/images/kalendarz.svg" alt="Calendar" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Kalendarz</span></a></li>
+    </ul>
 </div>
 @code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+    [Parameter]
+    public bool CollapseNavMenu { get; set; }
 }

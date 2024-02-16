@@ -1,60 +1,122 @@
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
+﻿.nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 360px; /* Width of the expanded sidebar */
+    align-items: center;
+    transition: width 0.5s; /* Smooth transition for collapsing and expanding */
+    justify-content: space-between; /* Distribute space between items */
+    height: 100%; /* Full height of the sidebar */
 }
 
-.top-row {
-    background-color: #2C3E50; 
+    .nav-menu.collapsed {
+        width: 60px; /* Width of the collapsed sidebar */
+    }
+
+.user-profile {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    flex-direction: row; /* User profile icon and name in a row */
+    width: 100%; /* Full width of the sidebar */ /* Space between user profile and nav items */
 }
 
-.navbar-brand {
-    font-size: 1.1rem;
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    flex-grow: 0;
+ /* Circular profile icon */ /* Space between profile icon and the next element */
 }
 
-.icon {
-    width: 2rem;
-    height: 2rem; 
-    margin-right: 10px; 
+.nav-items {
+    list-style: none;
+    padding-left: 0;
+    width: 100%; /* Full width of the sidebar */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
+
+    .nav-items .nav-item:first-child {
+        margin-top: 10px; /* Space between the first nav item and user profile */
+    }
 
 .nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    text-decoration: none;
+    color: white; /* Text color for nav items */
+    justify-content: start; /* Align nav items to the start for expanded sidebar */
+    width: 100%; /* Full width of the sidebar */
+}
+
+.nav-icon {
+    width: 30px; /* Nav item icon width */
+    height: 30px; /* Nav item icon height */
+    margin-right: 1rem; /* Space between icon and text */
+}
+
+/* Adjustments for when the sidebar is collapsed */
+.nav-menu.collapsed .nav-item {
+    justify-content: start; /* Center nav items in collapsed sidebar */
+    padding-left: 0;
+    padding-right: 0;
+    flex-direction: column;
+    /* Stack icon and text vertically */
+}
+
+.nav-menu.collapsed .nav-icon {
+    margin-right: 0; /* Remove margin on the right of icons in collapsed sidebar */
+    margin-bottom: 0; /* Remove additional space below icons in collapsed sidebar */
+}
+.nav-menu.collapsed .nav-item .nav-icon {
+    margin-bottom: 0px; /* Dodaje margines na dole ikony w zwiniętym menu */
+}
+.nav-menu.collapsed .nav-text,
+.nav-menu.collapsed .profile-name {
+    display: none; /* Hide text labels in collapsed sidebar */
+}
+
+
+.nav-items.bottom-items {
+    margin-top: auto; /* Pushes bottom items to the bottom */
+    width: 100%; /* Full width of the sidebar */
+}
+.nav-menu.collapsed .nav-item .project-icon {
+    margin-top: -480%; /* Przesuwa ikonę w górę o 15px */
+}
+user-profile + .nav-items .nav-item:first-child {
+    margin-top: -80%; /* Odstęp 15px pomiędzy profilem a pierwszym elementem menu */
+}
+.nav-text {
+    flex-grow: 0;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 0.8px;
+    text-align: left;
     color: white;
 }
-
-    .nav-item:first-of-type {
-        padding-top: 1rem;
-    }
-
-    .nav-item:last-of-type {
-        padding-bottom: 1rem;
-    }
-
-    .nav-item .nav-link {
-        color: #d7d7d7; 
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
-
-        .nav-item .nav-link.active {
-            background-color: #3498DB; /* Dostosuj kolor aktywnego linku */
-            color: white;
-        }
-
-        .nav-item .nav-link:hover {
-            background-color: #2980B9; /* Dostosuj kolor linku przy hover */
-            color: white;
-        }
-
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        display: block;
-    }
+.profile-name {
+    width: 290px;
+    height: 30px;
+    flex-grow: 10;
+    font-family: Poppins;
+    font-size: 20px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1px;
+    text-align: left;
+    color: #fff;
 }
+.nav-menu:not(.collapsed) .projects-item {
+    margin-top: -80%; /* Przesuwa cały element "Moje projekty" w górę o 15px */
+}
+
+/* Add any additional hover effects or styles as needed */

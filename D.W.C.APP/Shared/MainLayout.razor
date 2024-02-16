@@ -2,14 +2,14 @@
 
 <div class="page">
     <div class="sidebar @(collapseNavMenu ? "collapsed" : "")">
-        <NavMenu />
+        <NavMenu CollapseNavMenu="@collapseNavMenu" />
     </div>
 
     <main class="main-content">
         <div class="top-row">
             <button @onclick="ToggleNavMenu" class="nav-toggle-button"></button>
             <button @onclick="Settings" class="button-icon"></button>
-            <button @onclick="Settings" class="button-out"></button>
+            <button @onclick="Logout" class="button-out"></button>
         </div>
         <article class="content px-4">
             @Body
@@ -29,6 +29,11 @@
 
     private void Settings()
     {
-        
+        // Implement settings logic or navigation here
+    }
+
+    private void Logout()
+    {
+        // Implement logout logic here
     }
 }
