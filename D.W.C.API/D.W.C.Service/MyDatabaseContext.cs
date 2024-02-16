@@ -14,6 +14,7 @@ namespace D.W.C.API.D.W.C.Service
         public DbSet<WorkItemDetails> WorkItems { get; set; }
         public DbSet<WorkItemHistory> WorkItemsHistory { get; set; }
         public DbSet<Iteration> Iterations { get; set; }
+        public DbSet<WorkItemsList> WorkItem {  get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,6 +68,17 @@ namespace D.W.C.API.D.W.C.Service
                 entity.Property(e => e.Path).HasColumnName("Path");
                 entity.Property(e => e.StartDate).HasColumnName("StartDate");
                 entity.Property(e => e.FinishDate).HasColumnName("FinishDate");
+            });
+
+            modelBuilder.Entity<WorkItemsList>(entity =>
+            {
+                entity.ToTable("ITEM_LIST");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.ApiId).HasColumnName("Api_Id");
+                entity.Property(e => e.SprintId).HasColumnName("Spr_Id");
+                entity.Property(e => e.Url).HasColumnName("url");
             });
         }
 

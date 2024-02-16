@@ -76,12 +76,21 @@ namespace D.W.C.Api.Controllers
 
             try
             {
-                var workItemsListJson = await _devOpsClient.GetWorkItemsFromSprintAsync(iterationId);
-                var workItemsList = JsonConvert.DeserializeObject<WorkItemsList>(workItemsListJson);
+                WorkItemsListDto workItemsListDto = await _devOpsClient.GetWorkItemsFromSprintAsync(iterationId);
+                workItemsListDto.WorkItemRelations.ForEach(relation => relation.SprintId = iterationId);
+                var workItemsEntities = workItemsListDto.WorkItemRelations
+                    .Select(relation => _mapper.Map<WorkItemsList>(relation))
+                    .ToList();
 
-                
+                _context.WorkItem.AddRange(workItemsEntities);
 
-                return Ok(workItemsList);
+                await _context.SaveChangesAsync();
+
+                var workItemsToReturn = workItemsEntities
+                    .Select(entity => _mapper.Map<WorkItemRelationDto>(entity))
+                    .ToList();
+
+                return Ok(new WorkItemsListDto { WorkItemRelations = workItemsToReturn });
             }
             catch (Exception ex)
             {
@@ -89,23 +98,8 @@ namespace D.W.C.Api.Controllers
             }
         }
 
-        [HttpGet("workitem/details/{workItemId}")]
-        public async Task<IActionResult> GetWorkItemDetails(int workItemId)
-        {
-            try
-            {
-                var workItemDetailsJson = await _devOpsClient.GetWorkItemDetailsAsync(workItemId);
-                var workItemDetails = JsonConvert.DeserializeObject<WorkItemDetails>(workItemDetailsJson);
 
-            
 
-                return Ok(workItemDetails);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"B³¹d podczas pobierania szczegó³ów elementu pracy: {ex.Message}");
-            }
-        }
 
         [HttpGet("workitem/extended/{workItemId}")]
         public async Task<IActionResult> GetWorkItemDetailsExtended(int workItemId)

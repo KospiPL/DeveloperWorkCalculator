@@ -1,0 +1,100 @@
+
+.page {
+    display: flex;
+    min-height: 100vh;
+    height: auto;
+    width: auto;
+}
+
+.sidebar {
+    background-color: #8CABFF;
+    width: 360px;
+    transition: opacity 0.5s,width 0.5s;
+    position: fixed;
+    height: 100%;
+    top: auto;
+    
+}
+    .sidebar.collapsed {
+        position: fixed;
+        width: 60px;
+        padding: 0;
+        opacity: 10;
+        pointer-events: none
+    }
+
+.main-content {
+    transition: margin-left 0.3s;
+    margin-left: 250px; 
+}
+
+.top-row {
+    background-color: #2E4374;
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    z-index: 100;
+    left: 0%;
+}
+
+.nav-toggle-button {
+    background-image: url('/images/bartool.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 37px;
+    height: 37px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.content {
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: white;
+    padding-top: 3.5rem;
+}
+
+@media (min-width: 641px) {
+    .sidebar.collapsed + .main-content {
+        margin-left: 0;
+        
+    }
+    .sidebar:not(.collapsed) {
+        visibility: visible; 
+    }
+}
+.button-icon {
+    background-image: url('/images/zembatka.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30.55px;
+    height: 30.55px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    position: fixed;
+    right: 65px;
+}
+.button-out {
+    background-image: url('/images/logout.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 37px;
+    height: 37px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    position: fixed;
+    right: 10px;
+}
+
+
+
+
