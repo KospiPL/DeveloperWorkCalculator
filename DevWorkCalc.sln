@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D.W.C.API", "D.W.C.API\D.W.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D.W.C.Lib", "D.W.C.Lib\D.W.C.Lib.csproj", "{02B0A187-2B66-40E1-9842-D420501C285C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D.W.C.APP", "D.W.C.APP\D.W.C.APP.csproj", "{83D6E6DA-8978-45EC-82E4-B0AA31EFEF49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D.W.C.APP", "D.W.C.APP\D.W.C.APP.csproj", "{83D6E6DA-8978-45EC-82E4-B0AA31EFEF49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

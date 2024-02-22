@@ -5,10 +5,17 @@
         <img src="/images/vector.svg" alt="User Profile" class="profile-icon" />
         <span class="profile-name @(CollapseNavMenu ? "collapsed" : "")">Imie Nazwisko</span>
     </div>
-    <a href="/projects" class="nav-item">
+    <a href="#" class="nav-item nav-dropdown-toggle" @onclick="ToggleProjectsDropdown">
         <img src="/images/roww.svg" alt="Projects" class="nav-icon project-icon @(CollapseNavMenu ? "collapsed" : "")" />
         <span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Moje projekty</span>
+        <i class="fas fa-caret-down dropdown-icon @(CollapseNavMenu ? "collapsed" : "")"></i>
     </a>
+    <div class="nav-dropdown @(CollapseNavMenu || !projectsDropdownOpen ? "collapsed" : "")">
+        @foreach (var project in projects)
+        {
+            <a href=@project.Href class="nav-dropdown-item">@project.Name</a>
+        }
+    </div>
 
     <ul class="nav-items bootom-items">
         <li><a href="/employees" class="nav-item"><img src="/images/uzytkownik.svg" alt="Employees" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Pracownicy</span></a></li>
@@ -17,7 +24,28 @@
         <li><a href="/calendar" class="nav-item"><img src="/images/kalendarz.svg" alt="Calendar" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Kalendarz</span></a></li>
     </ul>
 </div>
+
 @code {
+    private bool projectsDropdownOpen = false;
+    private List<ProjectItem> projects = new List<ProjectItem>
+    {
+        new ProjectItem { Name = "Projekt 1", Href = "/project1" },
+        new ProjectItem { Name = "Projekt 2", Href = "/project2" },
+        new ProjectItem { Name = "Projekt 3", Href = "/project3" },
+        new ProjectItem { Name = "Projekt 4", Href = "/project4" },
+    };
+
     [Parameter]
     public bool CollapseNavMenu { get; set; }
+
+    private void ToggleProjectsDropdown()
+    {
+        projectsDropdownOpen = !projectsDropdownOpen;
+    }
+
+    public class ProjectItem
+    {
+        public string Name { get; set; }
+        public string Href { get; set; }
+    }
 }

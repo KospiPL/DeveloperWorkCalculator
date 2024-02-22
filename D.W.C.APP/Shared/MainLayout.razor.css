@@ -1,4 +1,4 @@
-/* The following styles are assumed to be within a scoped CSS file corresponding to the Razor component */
+
 
 .page {
     display: flex;
@@ -19,7 +19,7 @@
 }
 
     .sidebar.collapsed {
-        width: 60px;
+        width: 65px;
     }
 
 .main-content {
@@ -81,7 +81,9 @@
     overflow-y: auto;
     background-color: white;
 }
-
+.spacer {
+    flex-grow: 1;
+}
 @media (max-width: 640px) {
     .sidebar {
         width: 100%;
@@ -94,7 +96,7 @@
         }
 
     .main-content {
-        margin-left: 0;
+        margin-left: 80px; /* dopasuj do zwiniêtego sidebar na urz¹dzeniach mobilnych */
     }
 
     .top-row {

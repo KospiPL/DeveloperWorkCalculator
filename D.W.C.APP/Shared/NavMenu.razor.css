@@ -1,15 +1,16 @@
 ﻿.nav-menu {
     display: flex;
     flex-direction: column;
-    width: 360px; /* Width of the expanded sidebar */
+    width: 360px;
     align-items: center;
-    transition: width 0.5s; /* Smooth transition for collapsing and expanding */
-    justify-content: space-between; /* Distribute space between items */
-    height: 100%; /* Full height of the sidebar */
+    justify-content: space-between;
+    height: 100%;
 }
 
     .nav-menu.collapsed {
-        width: 60px; /* Width of the collapsed sidebar */
+        width: 61px;
+        
+
     }
 
 .user-profile {
@@ -17,28 +18,27 @@
     display: flex;
     align-items: center;
     padding: 0.5rem;
-    flex-direction: row; /* User profile icon and name in a row */
-    width: 100%; /* Full width of the sidebar */ /* Space between user profile and nav items */
+    flex-direction: row;
+    width: 101%;
 }
 
 .profile-icon {
     width: 50px;
     height: 50px;
     flex-grow: 0;
- /* Circular profile icon */ /* Space between profile icon and the next element */
 }
 
 .nav-items {
     list-style: none;
     padding-left: 0;
-    width: 100%; /* Full width of the sidebar */
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
     .nav-items .nav-item:first-child {
-        margin-top: 10px; /* Space between the first nav item and user profile */
+        margin-top: 10px;
     }
 
 .nav-item {
@@ -46,49 +46,51 @@
     align-items: center;
     padding: 1rem;
     text-decoration: none;
-    color: white; /* Text color for nav items */
-    justify-content: start; /* Align nav items to the start for expanded sidebar */
-    width: 100%; /* Full width of the sidebar */
+    color: white;
+    justify-content: start;
+    width: 100%;
 }
 
 .nav-icon {
-    width: 30px; /* Nav item icon width */
-    height: 30px; /* Nav item icon height */
-    margin-right: 1rem; /* Space between icon and text */
+    width: 30px;
+    height: 30px;
+    margin-right: 1rem;
 }
 
-/* Adjustments for when the sidebar is collapsed */
 .nav-menu.collapsed .nav-item {
-    justify-content: start; /* Center nav items in collapsed sidebar */
+    justify-content: start;
     padding-left: 0;
     padding-right: 0;
     flex-direction: column;
-    /* Stack icon and text vertically */
+    padding: 10px 0;
 }
 
 .nav-menu.collapsed .nav-icon {
-    margin-right: 0; /* Remove margin on the right of icons in collapsed sidebar */
-    margin-bottom: 0; /* Remove additional space below icons in collapsed sidebar */
+    margin-right: 0;
 }
+
 .nav-menu.collapsed .nav-item .nav-icon {
-    margin-bottom: 0px; /* Dodaje margines na dole ikony w zwiniętym menu */
+    margin-top: 0px;
 }
+
 .nav-menu.collapsed .nav-text,
 .nav-menu.collapsed .profile-name {
-    display: none; /* Hide text labels in collapsed sidebar */
+    display: none;
 }
-
 
 .nav-items.bottom-items {
-    margin-top: auto; /* Pushes bottom items to the bottom */
-    width: 100%; /* Full width of the sidebar */
+    margin-top: auto;
+    width: 100%;
 }
+
 .nav-menu.collapsed .nav-item .project-icon {
-    margin-top: -480%; /* Przesuwa ikonę w górę o 15px */
+    margin-top: -480%;
 }
+
 user-profile + .nav-items .nav-item:first-child {
-    margin-top: -80%; /* Odstęp 15px pomiędzy profilem a pierwszym elementem menu */
+    margin-top: -80%;
 }
+
 .nav-text {
     flex-grow: 0;
     font-family: Poppins;
@@ -101,6 +103,7 @@ user-profile + .nav-items .nav-item:first-child {
     text-align: left;
     color: white;
 }
+
 .profile-name {
     width: 290px;
     height: 30px;
@@ -115,8 +118,39 @@ user-profile + .nav-items .nav-item:first-child {
     text-align: left;
     color: #fff;
 }
-.nav-menu:not(.collapsed) .projects-item {
-    margin-top: -80%; /* Przesuwa cały element "Moje projekty" w górę o 15px */
+
+.nav-dropdown {
+    display: none;
+    list-style: none;
+    padding-left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-/* Add any additional hover effects or styles as needed */
+    .nav-dropdown.collapsed {
+        display: block;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+    }
+
+.nav-dropdown-item {
+    width: 330px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 175px;
+    margin: 20px 10px 10px 20px;
+    padding: 5px 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.nav-dropdown-item.collapsed {
+    display: none;
+}

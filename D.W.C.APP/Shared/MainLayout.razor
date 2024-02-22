@@ -1,16 +1,27 @@
 ﻿@inherits LayoutComponentBase
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<BlazoredModal />
 
 <div class="page">
-    <div class="sidebar @(collapseNavMenu ? "collapsed" : "")">
+    <nav id="sidebar" class="sidebar @(collapseNavMenu ? "collapsed" : "")" role="navigation">
         <NavMenu CollapseNavMenu="@collapseNavMenu" />
-    </div>
+    </nav>
 
-    <main class="main-content">
-        <div class="top-row">
-            <button @onclick="ToggleNavMenu" class="nav-toggle-button"></button>
-            <button @onclick="Settings" class="button-icon"></button>
-            <button @onclick="Logout" class="button-out"></button>
-        </div>
+    <main class="main-content" role="main">
+        <header class="top-row">
+            <button @onclick="ToggleNavMenu" class="nav-toggle-button" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i> 
+            </button>
+            <div class="spacer"></div> 
+            <button @onclick="Settings" class="button-icon" aria-label="Settings">
+                <i class="fas fa-cog"></i> 
+            </button>
+            <button @onclick="Logout" class="button-out" aria-label="Logout">
+                <i class="fas fa-sign-out-alt"></i> >
+            </button>
+        </header>
         <article class="content px-4">
             @Body
         </article>
@@ -20,20 +31,23 @@
 @code {
     private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    protected override async Task OnInitializedAsync()
+    {
+        collapseNavMenu = await localStorage.GetItemAsync<bool>("collapseNavMenu");
+    }
 
-    private void ToggleNavMenu()
+    private async Task ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+        await localStorage.SetItemAsync("collapseNavMenu", collapseNavMenu);
     }
 
     private void Settings()
     {
-        // Implement settings logic or navigation here
+        
     }
 
-    private void Logout()
+    private async Task Logout()
     {
-        // Implement logout logic here
     }
 }
