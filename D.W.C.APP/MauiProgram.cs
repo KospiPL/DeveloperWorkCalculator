@@ -1,4 +1,5 @@
 ﻿
+using Blazored.LocalStorage;
 using Microsoft.Extensions.Logging;
 
 namespace D.W.C.APP
@@ -17,6 +18,7 @@ namespace D.W.C.APP
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddBlazoredLocalStorage();
 
 
 #if DEBUG

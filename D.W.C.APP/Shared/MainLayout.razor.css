@@ -1,40 +1,41 @@
+/* The following styles are assumed to be within a scoped CSS file corresponding to the Razor component */
 
 .page {
     display: flex;
-    min-height: 100vh;
-    height: auto;
-    width: auto;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #fff;
 }
 
 .sidebar {
     background-color: #8CABFF;
-    width: 360px;
+    width: 355px;
     transition: opacity 0.5s,width 0.5s;
+    padding: 0 0 30px;
+    margin: 55px 0 0;
     position: fixed;
     height: 100%;
     top: auto;
-    
 }
+
     .sidebar.collapsed {
-        position: fixed;
-        width: 60px;
-        padding: 0;
-        opacity: 10;
-        pointer-events: none
+        width: 65px;
     }
 
 .main-content {
-    transition: margin-left 0.3s;
-    margin-left: 250px; 
+    transition: margin-left 0.5s;
+    margin-left: 360px;
+    flex-grow: 1;
 }
 
 .top-row {
     background-color: #2E4374;
     position: fixed;
     width: 100%;
-    height: 60px;
+    height: 56px;
     display: flex;
     align-items: center;
+    padding: 15px 20px 15px 15px;
     padding-left: 1rem;
     z-index: 100;
     left: 0%;
@@ -42,7 +43,7 @@
 
 .nav-toggle-button {
     background-image: url('/images/bartool.svg');
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     width: 37px;
@@ -50,51 +51,53 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
+    margin-right: auto; /* This will push the settings and logout buttons to the right */
+}
+
+.button-icon, .button-out {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 37px;
+    height: 37px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-left: 20px; /* Spacing between buttons */
+}
+
+.button-icon {
+    background-image: url('/images/zembatka.svg');
+    width: 30.55px;
+    height: 30.55px;
+}
+
+.button-out {
+    background-image: url('/images/logout.svg');
 }
 
 .content {
-    flex-grow: 1;
+    padding-top: 55px; /* Height of the top row */
     overflow-y: auto;
     background-color: white;
-    padding-top: 3.5rem;
 }
 
-@media (min-width: 641px) {
-    .sidebar.collapsed + .main-content {
+@media (max-width: 640px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+        .sidebar.collapsed {
+            width: 100%;
+        }
+
+    .main-content {
         margin-left: 0;
-        
     }
-    .sidebar:not(.collapsed) {
-        visibility: visible; 
+
+    .top-row {
+        padding-left: 15px;
     }
 }
-.button-icon {
-    background-image: url('/images/zembatka.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 30.55px;
-    height: 30.55px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    position: fixed;
-    right: 65px;
-}
-.button-out {
-    background-image: url('/images/logout.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 37px;
-    height: 37px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    position: fixed;
-    right: 10px;
-}
-
-
-
-

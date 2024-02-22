@@ -1,16 +1,18 @@
 ﻿@inherits LayoutComponentBase
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
 
 <div class="page">
-    <div class="sidebar @(collapseNavMenu ? "collapsed" : "")">
-        <NavMenu />
-    </div>
+    <nav id="sidebar" class="sidebar @(collapseNavMenu ? "collapsed" : "")" role="navigation">
+        <NavMenu CollapseNavMenu="@collapseNavMenu" />
+    </nav>
 
-    <main class="main-content">
-        <div class="top-row">
-            <button @onclick="ToggleNavMenu" class="nav-toggle-button"></button>
-            <button @onclick="Settings" class="button-icon"></button>
-            <button @onclick="Settings" class="button-out"></button>
-        </div>
+    <main class="main-content" role="main">
+        <header class="top-row">
+            <button @onclick="ToggleNavMenu" class="nav-toggle-button" aria-label="Toggle navigation menu"></button>
+            <button @onclick="Settings" class="button-icon" aria-label="Settings"></button>
+            <button @onclick="Logout" class="button-out" aria-label="Logout"></button>
+        </header>
         <article class="content px-4">
             @Body
         </article>
@@ -20,15 +22,25 @@
 @code {
     private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    protected override async Task OnInitializedAsync()
+    {
+        collapseNavMenu = await localStorage.GetItemAsync<bool>("collapseNavMenu");
+    }
 
-    private void ToggleNavMenu()
+    private async Task ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+        await localStorage.SetItemAsync("collapseNavMenu", collapseNavMenu);
     }
 
     private void Settings()
     {
         
+    }
+
+    private async Task Logout()
+    {
+        await localStorage.RemoveItemAsync("userToken");
+        NavigationManager.NavigateTo("/login", forceLoad: true);
     }
 }

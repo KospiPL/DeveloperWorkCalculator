@@ -1,33 +1,52 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿@inherits LayoutComponentBase
+
+<div class="nav-menu @(CollapseNavMenu ? "collapsed" : "")">
+    <div class="user-profile">
+        <img src="/images/vector.svg" alt="User Profile" class="profile-icon" />
+        <span class="profile-name @(CollapseNavMenu ? "collapsed" : "")">Imie Nazwisko</span>
     </div>
+    <div class="container-project">
+        <a href="#" class="nav-itema" @onclick="ToggleProjectsDropdown">
+            <img src="/images/roww.svg" alt="Projects" class="nav-icona @(CollapseNavMenu ? "collapsed" : "")" />
+            <span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Moje projekty</span>
+            <i class="fas fa-caret-down dropdown-icon @(CollapseNavMenu ? "collapsed" : "")"></i>
+        </a>
+        <div class="nav-dropdown @(CollapseNavMenu || !projectsDropdownOpen ? "collapsed" : "")">
+            @foreach (var project in projects)
+            {
+                <a href=@project.Href class="nav-dropdown-item">@project.Name</a>
+            }
+        </div>
+    </div>
+    <ul class="nav-items bootom-items">
+        <li><a href="/employees" class="nav-item"><img src="/images/uzytkownik.svg" alt="Employees" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Pracownicy</span></a></li>
+        <li><a href="/time" class="nav-item"><img src="/images/zegar.svg" alt="Time" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Czas</span></a></li>
+        <li><a href="/reports" class="nav-item"><img src="/images/raport.svg" alt="Reports" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Raporty</span></a></li>
+        <li><a href="/calendar" class="nav-item"><img src="/images/kalendarz.svg" alt="Calendar" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Kalendarz</span></a></li>
+    </ul>
 </div>
 
-<div class="@NavMenuCssClass">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <img src="path_to_your_home_icon" class="icon" alt="Home" /> Imię Nazwisko
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="moje-projekty">
-                <img src="path_to_your_projects_icon" class="icon" alt="Projects" /> Moje projekty
-            </NavLink>
-        </div>
-        
-    </nav>
-</div>
 @code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    private bool projectsDropdownOpen = false;
+    private List<ProjectItem> projects = new List<ProjectItem>
     {
-        collapseNavMenu = !collapseNavMenu;
+        new ProjectItem { Name = "Projekt 1", Href = "/project1" },
+        new ProjectItem { Name = "Projekt 2", Href = "/project2" },
+        new ProjectItem { Name = "Projekt 3", Href = "/project3" },
+        new ProjectItem { Name = "Projekt 4", Href = "/project4" },
+    };
+
+    [Parameter]
+    public bool CollapseNavMenu { get; set; }
+
+    private void ToggleProjectsDropdown()
+    {
+        projectsDropdownOpen = !projectsDropdownOpen;
+    }
+
+    public class ProjectItem
+    {
+        public string Name { get; set; }
+        public string Href { get; set; }
     }
 }
