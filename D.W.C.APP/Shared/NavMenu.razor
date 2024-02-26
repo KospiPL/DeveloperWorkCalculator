@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
+
 <div class="nav-menu @(CollapseNavMenu ? "collapsed" : "")">
     <div class="user-profile">
         <img src="/images/vector.svg" alt="User Profile" class="profile-icon" />
@@ -9,12 +10,14 @@
         <a href="#" class="nav-itema" @onclick="ToggleProjectsDropdown">
             <img src="/images/roww.svg" alt="Projects" class="nav-icona @(CollapseNavMenu ? "collapsed" : "")" />
             <span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Moje projekty</span>
-            <i class="fas fa-caret-down dropdown-icon @(CollapseNavMenu ? "collapsed" : "")"></i>
+            <i class="fas fa-caret-down dropdown-icon @(projectsDropdownOpen ? "collapsed" : "")"></i>
         </a>
-        <div class="nav-dropdown @(CollapseNavMenu || !projectsDropdownOpen ? "collapsed" : "")">
+        <div class="nav-dropdown @(projectsDropdownOpen ? "" : "collapsed")">
             @foreach (var project in projects)
             {
-                <a href=@project.Href class="nav-dropdown-item">@project.Name</a>
+                <div class="projekt"> 
+                   <a href=@project.Href class="nav-dropdown-item">@project.Name</a>
+                </div>
             }
         </div>
     </div>
@@ -38,12 +41,12 @@
 
     [Parameter]
     public bool CollapseNavMenu { get; set; }
-
+    
     private void ToggleProjectsDropdown()
     {
         projectsDropdownOpen = !projectsDropdownOpen;
     }
-
+    
     public class ProjectItem
     {
         public string Name { get; set; }

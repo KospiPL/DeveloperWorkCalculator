@@ -1,8 +1,13 @@
 /* The following styles are assumed to be within a scoped CSS file corresponding to the Razor component */
-
+.not-authenticated .sidebar,
+.not-authenticated .top-row {
+    display: none; 
+    visibility:hidden;
+}
 .page {
     display: flex;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     background-color: #fff;
 }
@@ -22,11 +27,7 @@
         width: 65px;
     }
 
-.main-content {
-    transition: margin-left 0.5s;
-    margin-left: 360px;
-    flex-grow: 1;
-}
+
 
 .top-row {
     background-color: #2E4374;

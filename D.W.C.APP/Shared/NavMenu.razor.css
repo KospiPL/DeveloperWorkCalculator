@@ -135,21 +135,29 @@ user-profile + .nav-items .nav-item:first-child {
 }
 
 .nav-dropdown {
-    display: none;
     list-style: none;
     padding-left: 0;
-    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin-top: 10px;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+    
 }
 
     .nav-dropdown.collapsed {
-        display: none;
+        
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         background-color: rgba(255, 255, 255, 0.5);
+        max-height: 0;
+        display: ruby-text;
+    }
+    .nav-dropdown:not(.collapsed) {
+        max-height: 200px; /* Maksymalna wysokość, jaką lista może przyjąć. */
+        visibility: visible;/* Lista jest teraz widoczna */
     }
 
 .nav-dropdown-item {
@@ -166,17 +174,18 @@ user-profile + .nav-items .nav-item:first-child {
     background-color: rgba(255, 255, 255, 0.5);
 }
 .nav-dropdown-item.collapsed {
-    display: none;
-   
+   display: none;
+   visibility: hidden;
 }
 .container-project {
     height: 100%;
     align-items: center;
+
 }
     .container-project.collapsed {
         align-items: center; /* Centruje elementy pionowo */
         justify-content: center;
-        display: flex;
+        display: none;
     }
     .nav-item nav-dropdown-toggle.collapsed {
         left: 100%;
@@ -192,3 +201,7 @@ user-profile + .nav-items .nav-item:first-child {
     width: 100%;
 }
 
+.nav-menu.collapsed .nav-dropdown-item{
+    display: none;
+}
+    
