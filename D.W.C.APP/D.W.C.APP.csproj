@@ -57,8 +57,10 @@
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
         <PackageReference Include="Blazored.Modal" Version="7.2.0" />
+        <PackageReference Include="Google.Apis.Auth" Version="1.67.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.16" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
 </Project>

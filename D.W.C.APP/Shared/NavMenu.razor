@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
+@inject NavigationManager NavigationManager
 
 <div class="nav-menu @(CollapseNavMenu ? "collapsed" : "")">
     <div class="user-profile">
@@ -21,11 +21,12 @@
             }
         </div>
     </div>
-    <ul class="nav-items bootom-items">
-        <li><a href="/employees" class="nav-item"><img src="/images/uzytkownik.svg" alt="Employees" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Pracownicy</span></a></li>
-        <li><a href="/time" class="nav-item"><img src="/images/zegar.svg" alt="Time" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Czas</span></a></li>
-        <li><a href="/reports" class="nav-item"><img src="/images/raport.svg" alt="Reports" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Raporty</span></a></li>
-        <li><a href="/calendar" class="nav-item"><img src="/images/kalendarz.svg" alt="Calendar" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Kalendarz</span></a></li>
+    <ul class="nav-items bottom-items">
+        <li><a @onclick="@(e => NavigateTo("/employees"))" class="nav-item"><img src="/images/uzytkownik.svg" alt="Employees" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Pracownicy</span></a></li>
+        <li><a @onclick="@(e => NavigateTo("/time"))" class="nav-item"><img src="/images/zegar.svg" alt="Time" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Czas</span></a></li>
+        <li><a @onclick="@(e => NavigateTo("/reports"))" class="nav-item"><img src="/images/raport.svg" alt="Reports" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Raporty</span></a></li>
+        <li><a @onclick="@(e => NavigateTo("/calendar"))" class="nav-item"><img src="/images/kalendarz.svg" alt="Calendar" class="nav-icon" /><span class="nav-text @(CollapseNavMenu ? "collapsed" : "")">Kalendarz</span></a></li>
+
     </ul>
 </div>
 
@@ -38,7 +39,10 @@
         new ProjectItem { Name = "Projekt 3", Href = "/project3" },
         new ProjectItem { Name = "Projekt 4", Href = "/project4" },
     };
-
+    private void NavigateTo(string url)
+    {
+        NavigationManager.NavigateTo(url);
+    }
     [Parameter]
     public bool CollapseNavMenu { get; set; }
     
