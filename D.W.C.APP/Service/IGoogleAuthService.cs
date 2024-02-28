@@ -14,8 +14,8 @@ namespace D.W.C.APP.Service
     {
         private readonly ClientSecrets _clientSecrets = new ClientSecrets
         {
-            ClientId = "842544829358-uo6j8r74k9ui3cjrqujqmeeiniu4g5al.apps.googleusercontent.com",
-            ClientSecret = "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"
+            ClientId = 
+            ClientSecret = 
         };
 
         private const string RedirectUri = "https://localhost/oauth2redirect";
