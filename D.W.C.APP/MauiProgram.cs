@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Hosting;
-using D.W.C.APP; // Upewnij się, że namespace odpowiada nazwie Twojego namespace.
+using D.W.C.APP; 
 using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Logging;
 using D.W.C.APP.Shared;
 using D.W.C.APP.Service;
-
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace D.W.C.APP
 {
@@ -17,11 +16,10 @@ namespace D.W.C.APP
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>() 
+                .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-
                 });
 
             // Konfiguracja Blazor i usług lokalnych
@@ -36,7 +34,13 @@ namespace D.W.C.APP
             // Konfiguracja systemu autoryzacji
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-            // Logowanie - dostosuj poziom logowania w zależności od potrzeb
+
+            // Rejestracja serwisu GoogleAuthService
+            builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+
+            // Rejestracja klienta HTTP
+            builder.Services.AddScoped<HttpClient>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

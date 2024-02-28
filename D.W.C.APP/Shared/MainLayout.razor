@@ -26,14 +26,27 @@
 </div>
 
 @code {
-    private bool collapseNavMenu = false;
+    private bool collapseNavMenu = true; 
     private bool isUserAuthenticated = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        AuthenticationStateProvider.AuthenticationStateChanged += HandleAuthenticationStateChanged;
-        await CheckUserAuthentication();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        isUserAuthenticated = authState.User.Identity.IsAuthenticated;
+        if (!isUserAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            // Przekierowanie na stronę ProjectPage, gdy użytkownik jest uwierzytelniony
+            NavigationManager.NavigateTo("/projectpage");
+
+            var storedValue = await localStorage.GetItemAsync<string>("collapseNavMenu");
+            collapseNavMenu = storedValue == null ? true : bool.Parse(storedValue);
+        }
     }
+
 
     private async Task CheckUserAuthentication()
     {
@@ -50,7 +63,7 @@
     private async void HandleAuthenticationStateChanged(Task<AuthenticationState> task)
     {
         await CheckUserAuthentication();
-        StateHasChanged(); // Refresh UI
+        StateHasChanged(); 
     }
 
     private string GetMainContentCssClass()
@@ -72,7 +85,7 @@
     private async Task Logout()
     {
         await localStorage.RemoveItemAsync("userToken");
-        isUserAuthenticated = false; // Make sure to update authentication state.
+        isUserAuthenticated = false;
         NavigationManager.NavigateTo("/login", forceLoad: true);
     }
 
