@@ -22,7 +22,7 @@ namespace D.W.C.APP.Service
 
         public async Task<UserCredential> AuthenticateAsync()
         {
-            var scopes = new[] { "email" };
+            var scopes = new[] { "email", "profile", "openid" };
             UserCredential credential;
 
             try

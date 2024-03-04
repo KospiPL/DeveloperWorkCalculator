@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace D.W.C.Lib.D.W.C.Models
+{
+    public class Uzytkownik
+    {
+        public int ID { get; set; }
+        public string Imie { get; set; }
+        public string Nazwisko { get; set; }
+        public string Haslo { get; set; } // Pamiętaj, by stosować odpowiednie zabezpieczenia hasła
+        public string Email { get; set; }
+        public string Token { get; set; }
+        public string Organizacja { get; set; }
+        public string Stanowisko { get; set; }
+    }
+}

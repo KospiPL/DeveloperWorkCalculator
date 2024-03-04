@@ -4,6 +4,9 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IGoogleAuthService GoogleAuthService
 @inject NavigationManager NavigationManager
+@inject MicrosoftAuthService microsoftAuthService
+
+
 
 
 <div class="login-container">
@@ -36,7 +39,7 @@
                 <img src="/images/group.svg" alt="Google" class="icon" />
                 <span class="btn-text">Zaloguj się przez Google</span>
             </button>
-            <button class="btn-microsoft">
+            <button class="btn-microsoft" @onclick="SignInWithMicrosoft">
                 <img src="/images/microsoft.svg" alt="Microsoft" class="icon" />
                 <span class="btn-text">Zaloguj się przez Microsoft</span>
             </button>
@@ -334,15 +337,6 @@
     private LoginModel loginModel = new LoginModel();
     private bool isRegistrationFormVisible = false;
     private readonly IGoogleAuthService _googleAuthService;
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if (authState.User.Identity.IsAuthenticated)
-        {
-            NavigationManager.NavigateTo("/");
-        }
-    }
-
     private CustomAuthenticationStateProvider customAuthProvider => (CustomAuthenticationStateProvider) AuthenticationStateProvider;
     private void ToggleRegistrationForm()
     {
@@ -358,6 +352,11 @@
         public string Email { get; set; }
         public string Password { get; set; }
     }
+    private async Task SignInWithMicrosoft()
+    {
+    }
+
+
     private async Task SignInWithGoogle()
     {
         try

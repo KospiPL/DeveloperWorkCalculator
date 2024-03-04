@@ -15,6 +15,8 @@ namespace D.W.C.API.D.W.C.Service
         public DbSet<WorkItemHistory> WorkItemsHistory { get; set; }
         public DbSet<Iteration> Iterations { get; set; }
         public DbSet<WorkItemsList> WorkItem {  get; set; }
+        public DbSet<Uzytkownik> Uzytkownicy { get; set; }
+        public DbSet<WorkItemDetails> workItemDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

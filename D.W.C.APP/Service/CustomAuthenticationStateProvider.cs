@@ -54,12 +54,14 @@ namespace D.W.C.APP.Service
 
                     try
                     {
+
                         var identity = new ClaimsIdentity(new[]
                         {
                            new Claim(ClaimTypes.Email, payload.email),
                         }, "Google");
 
                         _currentUser = new ClaimsPrincipal(identity);
+
                         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
                     }
                     catch (Exception ex)
@@ -76,10 +78,26 @@ namespace D.W.C.APP.Service
                 Console.WriteLine($"Błąd weryfikacji tokenu Google: {errorContent}");
             }
         }
+        public async Task SignInWithMicrosoftAsync(string token)
+        {
+            // Logika uwierzytelniania za pomocą tokenu Microsoft.
+            // Możesz tutaj użyć tokenu, aby zweryfikować użytkownika i ustawić odpowiedni stan uwierzytelnienia.
 
+            // Na przykład, zaktualizuj stan uwierzytelnienia:
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, "MicrosoftUserId"),
+            // Dodaj inne odpowiednie oświadczenia
+        };
+            var identity = new ClaimsIdentity(claims, "Microsoft");
+            var user = new ClaimsPrincipal(identity);
+
+            
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+        }
         class GooglePayload
         {
-            
+            public string imie { get; set; }
             public string sub { get; set; }
             public string name { get; set; }
             public string email { get; set; }

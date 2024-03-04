@@ -34,6 +34,7 @@ namespace D.W.C.APP
             // Konfiguracja systemu autoryzacji
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            builder.Services.AddScoped<MicrosoftAuthService>();
 
             // Rejestracja serwisu GoogleAuthService
             builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
