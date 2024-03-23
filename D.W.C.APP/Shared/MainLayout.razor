@@ -26,44 +26,44 @@
 </div>
 
 @code {
-    private bool collapseNavMenu = true; 
+    private bool collapseNavMenu = true;
     private bool isUserAuthenticated = false;
 
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        isUserAuthenticated = authState.User.Identity.IsAuthenticated;
-        if (!isUserAuthenticated)
-        {
-            NavigationManager.NavigateTo("/login");
-        }
-        else
-        {
-            // Przekierowanie na stronę ProjectPage, gdy użytkownik jest uwierzytelniony
-            NavigationManager.NavigateTo("/projectpage");
+        // Subskrypcja na zmiany stanu uwierzytelnienia
+        AuthenticationStateProvider.AuthenticationStateChanged += HandleAuthenticationStateChanged;
 
-            var storedValue = await localStorage.GetItemAsync<string>("collapseNavMenu");
-            collapseNavMenu = storedValue == null ? true : bool.Parse(storedValue);
-        }
+        await CheckUserAuthentication();
     }
-
 
     private async Task CheckUserAuthentication()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         isUserAuthenticated = authState.User.Identity.IsAuthenticated;
-        if (isUserAuthenticated)
+
+        // Sprawdzamy, czy użytkownik jest na stronie logowania.
+        bool isOnLoginPage = NavigationManager.Uri.EndsWith("/login");
+
+        if (!isUserAuthenticated && !isOnLoginPage)
         {
-            // Assuming "collapseNavMenu" is only relevant for authenticated users.
-            var storedValue = await localStorage.GetItemAsync<string>("collapseNavMenu");
-            collapseNavMenu = storedValue == null ? true : bool.Parse(storedValue);
+            NavigationManager.NavigateTo("/login");
         }
+        else if (isUserAuthenticated && isOnLoginPage)
+        {
+            
+            NavigationManager.NavigateTo("/main");
+        }
+
+        var storedValue = await localStorage.GetItemAsync<string>("collapseNavMenu");
+        collapseNavMenu = storedValue == null ? true : bool.Parse(storedValue);
     }
+
 
     private async void HandleAuthenticationStateChanged(Task<AuthenticationState> task)
     {
         await CheckUserAuthentication();
-        StateHasChanged(); 
+        StateHasChanged();
     }
 
     private string GetMainContentCssClass()
@@ -77,18 +77,16 @@
         await localStorage.SetItemAsync("collapseNavMenu", collapseNavMenu.ToString());
     }
 
-    private void Settings()
-    {
-        // Placeholder for settings logic
-    }
-
     private async Task Logout()
     {
         await localStorage.RemoveItemAsync("userToken");
         isUserAuthenticated = false;
         NavigationManager.NavigateTo("/login", forceLoad: true);
     }
-
+    public void Settings()
+    {
+        
+    }
     public void Dispose()
     {
         AuthenticationStateProvider.AuthenticationStateChanged -= HandleAuthenticationStateChanged;

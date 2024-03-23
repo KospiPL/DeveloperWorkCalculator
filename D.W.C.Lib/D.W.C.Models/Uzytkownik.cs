@@ -11,7 +11,7 @@ namespace D.W.C.Lib.D.W.C.Models
         public int ID { get; set; }
         public string Imie { get; set; }
         public string Nazwisko { get; set; }
-        public string Haslo { get; set; } // Pamiętaj, by stosować odpowiednie zabezpieczenia hasła
+        public string Haslo { get; set; } 
         public string Email { get; set; }
         public string Token { get; set; }
         public string Organizacja { get; set; }

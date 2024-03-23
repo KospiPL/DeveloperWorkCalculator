@@ -4,6 +4,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IGoogleAuthService GoogleAuthService
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject MicrosoftAuthService microsoftAuthService
 
 
@@ -344,7 +345,7 @@
     }
     private async Task HandleValidSubmit()
     {
-        
+
     }
 
     public class LoginModel
@@ -368,6 +369,8 @@
                 if (!string.IsNullOrEmpty(token))
                 {
                     await customAuthProvider.SignInWithGoogleAsync(token);
+                    await localStorage.SetItemAsync("userToken", token);
+                    var userToken = await localStorage.GetItemAsync<string>("userToken");
                 }
                 else
                 {
